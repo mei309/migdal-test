@@ -1,0 +1,12 @@
+<h2 class="component-header">ריכוז אנשי קשר</h2>
+<span class="margin-left">
+  <label>מספר אנשי קשר בתהליך:</label>
+  <label> {{amountOfContacts}} </label>
+</span>
+<label class="margin-left">פעולות אפשריות:</label>
+<button class="btn" type="button" (click)="addRow()">הוסף איש קשר
+</button>
+<button class="btn" type="button" (click)="deleteContacts(true)">איפוס מלא
+</button>
+<button class="btn" type="button" (click)="deleteContacts(false)">איפוס אנשי קשר
+</button>

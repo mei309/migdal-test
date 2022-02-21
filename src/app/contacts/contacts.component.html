@@ -1,0 +1,77 @@
+<h2 class="component-header">אנשי קשר</h2>
+<form role="form" [formGroup]="contactsinfo">
+  <div formArrayName="contactRows">
+      <table id="tables">
+          <thead>
+              <tr>
+                  <th></th>
+                  <th *ngFor="let field of contactFields">{{field.label}}</th>
+                  <th></th>
+              </tr>
+          </thead>
+          <tbody>
+              <tr *ngFor="let controw of contactRows.controls; let i=index" [formGroupName]="i">
+                <ng-container *ngIf="controw.value.add; else notAdding">
+                  <td>
+                    <input type="checkbox" formControlName="deliveryFlag"/>
+                  </td>
+                  <ng-container *ngFor="let field of contactFields">
+                    <td [ngSwitch]="field.type">
+                      <ng-container *ngSwitchCase="'input'">
+                        <input style="width: 120px;" type="text" [formControlName]="field.name"/>
+                      </ng-container>
+                      <ng-container *ngSwitchCase="'number'">
+                        <input style="width: 120px;" type="number" [formControlName]="field.name"/>
+                      </ng-container>
+                      <ng-container *ngSwitchCase="'select'">
+                        <select style="width: 120px;" [formControlName]="field.name">
+                          <option *ngFor="let sel of field.options" [ngValue]="sel">
+                            {{ sel.value }}
+                          </option>
+                        </select>
+                      </ng-container>
+                      <div *ngIf="field.validations && controw.get(field.name)?.invalid && (controw.get(field.name)?.dirty || controw.get(field.name)?.touched)" class="alert">
+                        <ng-container *ngFor="let validation of field.validations;">
+                          <div *ngIf="controw.get(field.name)?.hasError(validation.name)">
+                            {{validation.massage}}
+                          </div>
+                        </ng-container>
+                      </div>
+                    </td>
+
+                  </ng-container>
+                  <td>
+                    <button class="btn" type="button" (click)="setViewOnly(i)">
+                      <fa-icon [icon]="faPlus"></fa-icon>
+                    </button>
+                  </td>
+                </ng-container>
+                <ng-template #notAdding>
+                  <td><input [disabled]="true" type="checkbox" [checked]="controw.value.deliveryFlag"/></td>
+                  <ng-container *ngFor="let field of contactFields">
+                    <ng-container [ngSwitch]="field.type">
+                      <td *ngSwitchCase="'input'">{{controw.value[field.name]}}</td>
+                      <td *ngSwitchCase="'number'">{{controw.value[field.name] | phoneSyntaxPipe}}</td>
+                      <td *ngSwitchCase="'select'">{{controw.value[field.name]['value']}}</td>
+                    </ng-container>
+                  </ng-container>
+                  <td></td>
+                </ng-template>
+
+              </tr>
+          </tbody>
+      </table>
+  </div>
+
+    <ng-container >
+      <div *ngIf="contactRows.invalid && (contactRows.dirty || contactRows.touched)" class="alert">
+        <div *ngIf="contactRows.hasError('atLeastOneRequired')">
+          חייב להיות לפחות איש קשר מועדף אחד
+        </div>
+      </div>
+    </ng-container>
+
+</form>
+<h3 class="warn">{{notVaildMessage}}</h3>
+<button class="btn" type="button" (click)="addEmptyRow()">הוסף איש קשר
+</button>

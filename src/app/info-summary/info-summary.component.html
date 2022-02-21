@@ -1,0 +1,25 @@
+<h2 class="component-header">ריכוז מידע התהליך</h2>
+<app-details-show [insured]="insured"></app-details-show>
+<form [formGroup]="insuranceForm" class="add-form">
+  <div *ngFor="let field of insuranceFields" class="form-control">
+    <ng-container [ngSwitch]="field.type">
+      <label>{{field.label}}</label>
+      <select *ngSwitchCase="'select'" [formControlName]="field.name">
+        <option *ngFor="let sel of field.options" [ngValue]="sel">
+          {{ sel.value }}
+        </option>
+      </select>
+      <input *ngSwitchCase="'date'" type="date" [formControlName]="field.name"/>
+      <div *ngIf="insuranceForm.get(field.name)?.invalid && (insuranceForm.get(field.name)?.dirty || insuranceForm.get(field.name)?.touched)" class="alert">
+        <div *ngIf="insuranceForm.get(field.name)?.hasError('required')">
+          {{field.error}}
+        </div>
+      </div>
+    </ng-container>
+  </div>
+</form>
+<div *ngIf="insuranceForm.get('submitedBy').invalid && (insuranceForm.get('submitedBy').dirty || insuranceForm.get('submitedBy').touched)" class="alert">
+  <div *ngIf="insuranceForm.get('submitedBy')?.hasError('noContactType')">
+    חייב להיות איש קשר מאותו הסוג
+  </div>
+</div>

@@ -1,0 +1,20 @@
+<!-- i could also build a dynamic way but for this case better to do it manually -->
+<span class="details-show">
+  <label>פרטי מבוטח:</label>
+</span>
+<span class="details-show">
+  <label>שם:</label>
+  <label>{{insured.lastName}} {{insured.firstName}}</label>
+</span>
+<span class="details-show">
+  <label>ת.ז.:</label>
+  <label>{{insured.identity}}</label>
+</span>
+<span class="details-show">
+  <label>גיל:</label>
+  <label>{{insured.age}}</label>
+</span>
+<span class="details-show">
+  <label>כתובת:</label>
+  <label>{{insured.address?.cityName}}, {{insured.address?.streetName}}</label>
+</span>
